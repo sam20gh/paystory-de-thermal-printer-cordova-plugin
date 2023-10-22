@@ -101,6 +101,22 @@ export interface ThermalPrinterPlugin {
   printFormattedTextAndCut(data: PrintFormattedText, success: () => void, error: (value: ErrorResult) => void): void;
 
   /**
+   * Print a formatted text, feed paper and cut the paper and open cash drawer
+   * @see https://github.com/DantSu/ESCPOS-ThermalPrinter-Android#formatted-text--syntax-guide
+   *
+   * @param {Object[]} data - Data object
+   * @param {"bluetooth"|"tcp"|"usb"} data.type - List all bluetooth or usb printers
+   * @param {string|number} [data.id] - ID of printer to find (Bluetooth: address, TCP: Use address + port instead, USB: deviceId)
+   * @param {string} [data.address] - If type is "tcp" then the IP Address of the printer
+   * @param {number} [data.port] - If type is "tcp" then the Port of the printer
+   * @param {number} [data.mmFeedPaper] - Millimeter distance feed paper at the end
+   * @param {number} [data.dotsFeedPaper] - Distance feed paper at the end
+   * @param {string} data.text - Formatted text to be printed
+   * @param {function} success
+   * @param {function} error
+   */
+  printFormattedTextAndOpenCashBox(data: PrintFormattedText, success: () => void, error: (value: ErrorResult) => void): void;
+  /**
    * Get the printer encoding when available
    *
    * @param {Object[]} data - Data object

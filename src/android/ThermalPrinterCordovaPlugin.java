@@ -169,7 +169,7 @@ public class ThermalPrinterCordovaPlugin extends CordovaPlugin {
         try {
             byte[] bytes = (byte[]) data.get("bytes");
             Bitmap decodedByte = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            callbackContext.success(PrinterTextParserImg.bitmapToHexadecimalString(printer, decodedByte));
+            callbackContext.success(PrinterTextParserImg.bitmapToHexadecimalString(printer, decodedByte,false));
         } catch (Exception e) {
             callbackContext.error(new JSONObject(new HashMap<String, Object>() {{
                 put("error", e.getMessage());
@@ -286,7 +286,10 @@ public class ThermalPrinterCordovaPlugin extends CordovaPlugin {
             int dotsFeedPaper = data.has("mmFeedPaper")
                 ? printer.mmToPx((float) data.getDouble("mmFeedPaper"))
                 : data.optInt("dotsFeedPaper", 20);
-            if (action.endsWith("Cut")) {
+            if(action.endsWith("CashBox")){
+                printer.printFormattedTextAndOpenCashBox(data.getString("text"), dotsFeedPaper);
+            }
+            else if (action.endsWith("Cut")) {
                 printer.printFormattedTextAndCut(data.getString("text"), dotsFeedPaper);
             } else {
                 printer.printFormattedText(data.getString("text"), dotsFeedPaper);
