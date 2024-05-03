@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.util.Base64;
+import android.util.Log;
 
 import com.dantsu.escposprinter.EscPosCharsetEncoding;
 import com.dantsu.escposprinter.EscPosPrinter;
@@ -344,6 +345,7 @@ public class ThermalPrinterCordovaPlugin extends CordovaPlugin {
             if (!this.checkBluetooth(callbackContext)) {
                 return null;
             }
+
             // if (!this.cordova.hasPermission(Manifest.permission.BLUETOOTH)) {
             //     callbackContext.error(new JSONObject(new HashMap<String, Object>() {{
             //         put("error", "Missing permission for " + Manifest.permission.DISABLE_KEYGUARD);
@@ -375,6 +377,7 @@ public class ThermalPrinterCordovaPlugin extends CordovaPlugin {
 
     private EscPosPrinter getPrinter(CallbackContext callbackContext, JSONObject data) throws JSONException {
         DeviceConnection deviceConnection = this.getPrinterConnection(callbackContext, data);
+
         if (deviceConnection == null) {
             throw new JSONException("Device not found");
         }
@@ -399,6 +402,7 @@ public class ThermalPrinterCordovaPlugin extends CordovaPlugin {
         }
 
         try {
+
             return new EscPosPrinter(
                 deviceConnection,
                 data.optInt("printerDpi", 203),
