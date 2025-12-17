@@ -170,7 +170,16 @@ public class ThermalPrinterCordovaPlugin extends CordovaPlugin {
         try {
             byte[] bytes = (byte[]) data.get("bytes");
             Bitmap decodedByte = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            callbackContext.success(PrinterTextParserImg.bitmapToHexadecimalString(printer, decodedByte));
+            StringBuilder sb = new StringBuilder();
+            int width = decodedByte.getWidth();
+            int height = decodedByte.getHeight();
+            for(int y = 0; y < height; y += 255) {
+                y = y >= height? height : y;
+                int limit = y + 255 >= height? height - y : 255;
+                Bitmap bitmap = Bitmap.createBitmap(decodedByte, 0, y, width, limit);
+                sb.append("[C]<img>"+PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap)+"</img>\n");
+            }
+            callbackContext.success(sb.toString());
         } catch (Exception e) {
             callbackContext.error(new JSONObject(new HashMap<String, Object>() {{
                 put("error", e.getMessage());
